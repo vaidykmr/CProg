@@ -13,11 +13,23 @@ int main()
     float time = 0;
     float angle;
     short int samples;
+
+    FILE *fp;
+    // This function talks to the OS to create the file, creates a separate region for the file and then return us the pointer to that file. This is what fp is holding
+    fp = fopen("sine.raw", "wb");
+
+    if (fp == NULL)
+    {
+        printf("Failed to open the file \n");
+        return -1;
+    }
+
     while(i < total_samples)
     {
         time = i/samples_per_second;
         angle = 2*3.14*tone_frequency*time;
         samples = max_value_encoding * sin(angle);
+        fwrite(&samples, 2, 1, fp);  // pass by reference
         printf("%d ", samples);
         i = i+1;
     }
