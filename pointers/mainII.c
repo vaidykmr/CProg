@@ -1,6 +1,8 @@
 // Array and pointers similarity and difference
 
 #include <stdio.h>
+#include <malloc.h>
+#include <string.h>
 
 void main()
 {
@@ -43,4 +45,44 @@ void main()
     xptr++;
     printf("After pointer increment \n");
     printf("*xptr = %d \n", *xptr);
+
+
+    // Array of pointers
+
+    int a [10] = {1,2,3,4,5,6,7,8,9,10};
+    int *a_ptr[10];
+
+    memset(a_ptr, 0, sizeof(a_ptr[10]));
+
+    for (int i = 0; i < 10; i++)
+    {
+        a_ptr[i] = &a[i];
+        printf("a_ptr[%d] = %p \t" , i, a_ptr[i]);
+        printf("%lu \n", sizeof(a_ptr[i]));
+    }
+
+    printf("\n");
+
+
+    // malloc() method
+    int *b_ptr[10];
+
+    memset(b_ptr, 0, sizeof(b_ptr[10]));
+
+    for (int i = 0; i < 10; i++)
+    {
+        b_ptr[i] = (int*)malloc(sizeof(int)); // allocated in the heap
+        *b_ptr[i] = (10 - i);
+        printf("b_ptr[%d] = %p \n" , i, b_ptr[i]);
+    }
+
+    for (int i = 0; i < 10; i++)
+    {
+        printf("*b_ptr[%d] = %d \n", i, *b_ptr[i]);
+    }
+
+    for (int i = 0; i < 10; i++)
+    {
+        free(b_ptr[i]);  // freed from heap
+    }
 }
