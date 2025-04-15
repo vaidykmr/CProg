@@ -85,4 +85,10 @@ void main()
     {
         free(b_ptr[i]);  // freed from heap
     }
+
+
+
+    int *p = NULL;
+    printf("%p \n", p);
+    // printf("%d \n", *p);  deferencing a NULL pointer leads to crash (segmentation fault)
 }
