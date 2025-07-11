@@ -91,4 +91,26 @@ void main()
     int *p = NULL;
     printf("%p \n", p);
     // printf("%d \n", *p);  deferencing a NULL pointer leads to crash (segmentation fault)
+
+
+
+    int a_tmp[5]= {1,2,3,4,5};
+    int *temp;
+
+    temp = a_tmp;
+
+    for (int i = 0; i < 5; i++)
+    {
+        if (i == 3)
+        {
+            temp[i] = 6;
+        }
+    }
+
+
+    for (int i = 0; i < 5; i++)
+    {
+        printf("%d \n", a_tmp[i]);
+    }
+    return 0;
 }
