@@ -40,12 +40,25 @@ void deleteNode(struct Node* current_node , int number)
 
 void display(struct Node *head)
 {
+
+    if (head == NULL)
+    {
+        printf("Node empty\n");
+    }
     while (head != NULL)
     {
         printf("%d ", head->value);
         head = head->next;
     }
 }
+void delete(struct Node **head)
+{
+    while (*head != NULL)
+    {
+        *head = NULL;
+    }
+}
+
 
 int main()
 {
@@ -82,7 +95,15 @@ int main()
     display(first);
     printf("\n");
     printf("After deletion \n");
-    deleteNode(first, 5);
+    deleteNode(first, 3);
     display(first);
-    free(tmp);
+
+    printf("\nDelete the entire node........ \n");
+    delete(&first);
+    if (first == NULL)
+    {
+        printf("Entire Node successfully deleted \n");
+    }
+
+    display(first);
 }
