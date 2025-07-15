@@ -23,11 +23,41 @@ void insertAtEnd(struct Node *current_node, int number)
 }
 
 
-void deleteNode(struct Node* current_node , int number)
+void deleteNode(struct Node** current_node , int number)
 {
     struct Node* prev = NULL;
-    while(current_node->next != NULL && current_node->value != number)
+    struct Node *current = *current_node;
+
+    if (current->value == number)
     {
+        *current_node = current->next;
+        free(current);
+    }
+    else
+    {
+        while(current->next != NULL && current->value != number)
+        {
+            prev = current;
+            // printf("Hello %d \n", prev->value);
+            current = current->next;
+            // printf("Next Hello %d \n", (*current_node)->value);
+
+        }
+        prev->next = current->next;
+        current = prev;
+    }
+
+}
+
+
+void deleteFromEnd(struct Node* current_node , int index_from_end, int total_count)
+{
+    int count = 0;
+    int index_to_delete_node = total_count - index_from_end;
+    struct Node* prev = NULL;
+    while(current_node->next != NULL && count < index_to_delete_node)
+    {
+        count ++;
         prev = current_node;
         current_node = current_node->next;
     }
@@ -51,6 +81,15 @@ void display(struct Node *head)
         head = head->next;
     }
 }
+
+void countNoOfNodes(struct Node *head, int *count)
+{
+    while (head != NULL)
+    {
+        (*count)++;
+        head = head->next;
+    }
+}
 void delete(struct Node **head)
 {
     while (*head != NULL)
@@ -65,6 +104,7 @@ int main()
     struct Node *first = NULL;
     struct Node *tmp = NULL, *last = NULL;
     int arr[4] = {1 ,2, 3, 4};
+    int count = 0;
 
     int new_entry = 5;
 
@@ -89,13 +129,21 @@ int main()
     }
 
     display(first);
+    countNoOfNodes(first, &count);
+    printf("\nThe total number of nodes \t");
+    printf("%d ", count);
+
+    printf("\nDelete from end \n");
+    deleteFromEnd(first, 2, count);
+    display(first);
+
     insertAtEnd(first, new_entry);
     printf("\n");
     printf("After insertion \n");
     display(first);
     printf("\n");
     printf("After deletion \n");
-    deleteNode(first, 3);
+    deleteNode(&first, 1);
     display(first);
 
     printf("\nDelete the entire node........ \n");
