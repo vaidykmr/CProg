@@ -99,6 +99,14 @@ void sortNode (struct Node *head)
     }
 }
 
+void delete(struct Node **head)
+{
+    while (*head != NULL)
+    {
+        *head = NULL;
+    }
+}
+
 int main()
 {
     struct Node *firstNode = NULL, *secondNode = NULL, *resultNode = NULL;
@@ -118,4 +126,13 @@ int main()
     sortNode(resultNode);
     printf("\n");
     display(resultNode);
+
+    delete(&firstNode);
+    delete(&secondNode);
+    delete(&resultNode);
+
+    if (!firstNode && !secondNode && !resultNode)
+    {
+        printf("\nSuccessfully deleted all the nodes");
+    }
 }
