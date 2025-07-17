@@ -37,25 +37,66 @@ void display(struct Node *head)
     printf("NULL");
 }
 
-
-void count_nodes(struct Node *head, int *count)
-{
-    while (head != NULL)
-    {
-        (*count)++;
-        head = head->next;
-    }
-}
-
 void mergeTwoNodes (struct Node *Node1, struct Node *Node2, struct Node **finalNode)
 {
-    *finalNode = Node1;
-    struct Node *final = *finalNode;
-    while (final->next != NULL)
+    struct Node *last = NULL, *tmp = NULL;
+    *finalNode = (struct Node*)malloc(sizeof(struct Node));
+    (*finalNode)->value = Node1->value;
+    (*finalNode)->next = NULL;
+    last = (*finalNode);
+    Node1 = Node1->next;
+
+    while(Node1 != NULL)
     {
-        final = final->next;
+        tmp = (struct Node *)malloc(sizeof(struct Node));
+        tmp->value = Node1->value;
+        tmp->next = NULL;
+        last->next = tmp;
+        last = tmp;
+        Node1 = Node1->next;
     }
-    final->next = Node2;
+
+    last->next = Node2;
+}
+
+void sortNode (struct Node *head)
+{
+    int swapped;
+    struct Node *ptr1, *ptr2 = NULL;
+    /*do {
+        swapped = 0;
+        ptr1 = head;
+
+        while (ptr1->next != ptr2) {
+            if (ptr1->value > ptr1->next->value) {
+                // Swap values
+                int temp = ptr1->value;
+                ptr1->value = ptr1->next->value;
+                ptr1->next->value = temp;
+                swapped = 1;
+            }
+            ptr1 = ptr1->next;
+        }
+        ptr2 = ptr1; // reduce loop range each pass
+    } while (swapped);*/
+    swapped = 1;
+    while (swapped)
+    {
+        swapped = 0;
+        ptr1 = head;
+        while (ptr1->next != ptr2)
+        {
+            if (ptr1->value > ptr1->next->value)
+            {
+                int temp = ptr1->value;
+                ptr1->value = ptr1->next->value;
+                ptr1->next->value = temp;
+                swapped = 1;
+            }
+            ptr1 = ptr1->next;
+        }
+        ptr2 = ptr1;
+    }
 }
 
 int main()
@@ -67,12 +108,14 @@ int main()
     int *b_ptr = b;
     createNode(&firstNode,a_ptr);
     createNode(&secondNode, b_ptr);
-
     display(firstNode);
     printf("\n");
     display(secondNode);
     mergeTwoNodes(firstNode, secondNode, &resultNode);
-
+    printf("\n");
+    display(resultNode);
+    //display(firstNode);  // sanity check
+    sortNode(resultNode);
     printf("\n");
     display(resultNode);
 }
