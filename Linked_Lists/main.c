@@ -98,6 +98,39 @@ void delete(struct Node **head)
     }
 }
 
+void reverseNodes(struct Node **head, int count)
+{
+    int *arr;
+    arr = (int*)malloc(count*sizeof(int));
+    int i = 0;
+    struct Node *dummy = NULL;
+    dummy = *head;
+    while (dummy != NULL)
+    {
+        arr[i] = dummy->value;
+        dummy = dummy->next;
+        i++;
+    }
+
+    struct Node *reverseHead = NULL;
+    struct Node *last = NULL, *tmp = NULL;
+    reverseHead = (struct Node*)malloc(sizeof(struct Node));
+    reverseHead->value = arr[count-1];
+    reverseHead->next = NULL;
+    last = reverseHead;
+
+    for (int j = count - 2; j >= 0; j--)
+    {
+        tmp = (struct Node*)malloc(sizeof(struct Node));
+        tmp->value = arr[j];
+        tmp->next = NULL;
+        last->next = tmp;
+        last = tmp;
+    }
+
+    *head = reverseHead;
+}
+
 
 int main()
 {
@@ -132,7 +165,9 @@ int main()
     countNoOfNodes(first, &count);
     printf("\nThe total number of nodes \t");
     printf("%d ", count);
-
+    printf("\n***********************************************************\n");
+    reverseNodes(&first, count);
+    display(first);
     printf("\nDelete from end \n");
     deleteFromEnd(first, 2, count);
     display(first);
