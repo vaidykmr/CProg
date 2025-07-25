@@ -131,6 +131,24 @@ void reverseNodes(struct Node **head, int count)
     *head = reverseHead;
 }
 
+void reverseLinkedNodes(struct Node **head)
+{
+    struct Node *prev = NULL, *next = NULL;
+
+    struct Node *current = *head;
+
+    while(current != NULL)
+    {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+
+    *head = prev;
+
+}
+
 
 int main()
 {
@@ -162,12 +180,16 @@ int main()
     }
 
     display(first);
+
+    reverseLinkedNodes(&first);
+    printf("\n");
+    display(first);
     countNoOfNodes(first, &count);
     printf("\nThe total number of nodes \t");
     printf("%d ", count);
-    printf("\n***********************************************************\n");
+    /*printf("\n***********************************************************\n");
     reverseNodes(&first, count);
-    display(first);
+    display(first);*/
     printf("\nDelete from end \n");
     deleteFromEnd(first, 2, count);
     display(first);
