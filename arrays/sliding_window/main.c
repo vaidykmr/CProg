@@ -10,14 +10,24 @@ void sliding_window(int *arr, int size, int window_length)
     }
     count = count + 1;
     printf("Window sum %d : %d", count, window_sum);
-    window_sum = 0;
+    /* window_sum = 0;
     for (int i = window_length - 1; i <= ((size - window_length) + 1); i++)
     {
         window_sum += arr[i] + arr[i+1] + arr[i-1];
         count ++;
         printf("Window sum %d : %d", count, window_sum);
         window_sum = 0;
+    }*/
+
+    // alternate solution
+    for (int i = window_length; i < size; i++)
+    {
+        window_sum += arr[i] - arr[i - window_length];
+        count ++;
+        printf("\nWindow sum %d : %d ", count, window_sum);
     }
+
+
 }
 
 
