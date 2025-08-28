@@ -28,12 +28,16 @@ int hasCycle(struct listNode *head)
 
         if (slow == fast)
         {
-            found = 1;
-            return found;
+            slow = head;
+            while (slow != fast)
+            {
+                slow = slow->next;
+                fast = fast->next;
+            }
+            return slow->value;
         }
     }
-
-    return found;
+    return -1;
 
 }
 int main()
@@ -47,15 +51,8 @@ int main()
 
     head->next->next->next->next = head->next->next;  // Cycle
 
-    int status = hasCycle(head);
-    if (status)
-    {
-        printf("Cycle detected");
-    }
-    else
-    {
-        printf("No Cycle detected");
-    }
+    int meeting_value = hasCycle(head);
+    printf("%d ", meeting_value);
 
     return 0;
 }
