@@ -19,8 +19,9 @@ void *thread1(void *args)
             arr[index] = 10*index;
             printf("Write the value %d at index %d \n", arr[index], index);
         }
-        sem_post(&sem);
         sem_post(&lock);
+        printf("Hello from thread 1 \n");
+        sem_post(&sem);
         sleep(1);
     }
 
@@ -33,6 +34,7 @@ void *thread2(void *args)
     for (int i = 0; i < MAX_SIZE; i++)
     {
         sem_wait(&sem);
+        printf("Hello from thread 2 \n");
         sem_wait(&lock);
         if (index < MAX_SIZE)
         {
