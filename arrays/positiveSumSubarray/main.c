@@ -4,39 +4,35 @@
 
 int main()
 {
-    int arr[] = {17,-24,5,-10,4,2,4,14};
+    int arr[] = {-2, 2, -3, 1};
     int size = sizeof(arr)/sizeof(int);
 
-    int l = 7, r = 8;
+    int l = 2, r = 3;
 
-    int prefixSum[size];
+    int prefixSum[size+1];
     memset(prefixSum, 0, sizeof(prefixSum));
-    int sum = 0;
-    for(int i = 0; i < size; i++)
+    prefixSum[0] = 0;
+    for(int i = 1; i <= size; i++)
     {
-        sum+= arr[i];
-        prefixSum[i] = sum;
+        prefixSum[i] = arr[i-1] + prefixSum[i-1];
     }
 
-    for(int i = 0; i <size; i++)
+    for(int i = 0; i <size+1; i++)
     {
         printf("%d ",prefixSum[i]);
     }
 
-    int current_sum = prefixSum[l-1];
+    int current_sum = INT_MAX;
     int i = l;
-    while(i < size && l <= r)
+    while(i <= size && l <= r)
     {
         int latest_sum = prefixSum[i] - prefixSum[i-l];
-        if (latest_sum > 0)
+        if (latest_sum > 0 && latest_sum < current_sum)
         {
-            if (latest_sum < current_sum)
-                current_sum = latest_sum;
-            else if(current_sum <= 0)
-                current_sum = latest_sum;
+            current_sum = latest_sum;
         }
         
-        if (i == size - 1)
+        if (i == size)
         {
             if (l == r)
             {
@@ -45,22 +41,13 @@ int main()
             else
             {
                 l = l + 1;
-                int new_sum = prefixSum[l-1];
                 i = l;
-                if (new_sum > 0 && new_sum < current_sum)
-                {
-                    current_sum = new_sum;
-                }
-                else if(current_sum < 0)
-                    current_sum = new_sum;
             }
         }
-        else 
-        {
-            i = i + 1;
-        }
+        else
+            i++;
     }
-    if (current_sum > 0)
+    if (current_sum > 0 && current_sum != INT_MAX)
         printf("\n Output = %d", current_sum);
     else
     {
