@@ -116,11 +116,37 @@ void deleteNode(struct Node **head, int index)
 
 }
 
+// The aim is to delete the duplicates and we can assume that the linked list is in the ascending order
+struct Node *deleteDuplicates (struct Node *head)
+{
+    struct Node* cursor = head;
+    struct Node* originalNode = cursor;
+
+
+    if (!cursor)
+        return NULL;
+    
+    while (cursor && cursor->next)
+    {
+        while(cursor->value == cursor->next->value)
+        {
+            struct Node *tmp = cursor->next;
+            cursor->next = cursor->next->next;
+            free(tmp);
+        }
+        cursor = cursor->next;
+    }
+
+    return originalNode;
+}
+
 int main()
 {
     struct Node *first = NULL;
 
-    int arr[] = {1, 2, 1, 4, 5, 4, 3, 5, 3, 2, 3, 1, 4, 3};
+    // int arr[] = {1, 2, 1, 4, 5, 4, 3, 5, 3, 2, 3, 1, 4, 3};
+    // for duplicates
+    int arr[] = {1, 1, 2, 2, 3, 3, 4, 4, 5, 6};
     int size = sizeof(arr)/sizeof(int);
 
     CreateNode(&first, arr, size);
@@ -131,9 +157,10 @@ int main()
 
     display(reverseNode); */
 
-    deleteNode(&first, 1);
+    // deleteNode(&first, 1);
+    struct Node *remDupNode = deleteDuplicates(first);
     printf("\n");
-    display(first);
+    display(remDupNode);
 
     /* int decimalInteger = getDecimalValue(first);
 
