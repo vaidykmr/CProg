@@ -84,27 +84,34 @@ struct Node *reverseNodes(struct Node * head)
 void deleteNode(struct Node **head, int index)
 {
     struct Node *cursor = *head;
-    int firstNodedeleted = 0;
 
+    // Check if the first node needs to be removed
     if (cursor->value == index)
     {
+        struct Node* tmp = cursor;
         cursor = cursor->next;
         *head = cursor;
-        firstNodedeleted = 1;
+        // Need to free the memory of deleted node to avoid memory leaks
+        free(tmp);
+
+        cursor = *head;
     }
 
-    if (!firstNodedeleted)
+    while (cursor && cursor->next)
     {
-        while (cursor)
+        if (cursor->next->value == index)
         {
-            if(cursor->next->value == index)
-            {
-                cursor->next = cursor->next->next;
-                break;
-            }
-            cursor = cursor->next;
-
+            struct Node *tmp = cursor->next;
+            cursor->next = cursor->next->next;
+            // Need to free the memory of deleted node to avoid memory leaks
+            free(tmp);
         }
+
+        else
+        {
+            cursor = cursor->next;
+        }
+        
     }
 
 }
@@ -113,7 +120,7 @@ int main()
 {
     struct Node *first = NULL;
 
-    int arr[] = {1, 2, 3, 4, 5};
+    int arr[] = {1, 2, 1, 4, 5, 4, 3, 5, 3, 2, 3, 1, 4, 3};
     int size = sizeof(arr)/sizeof(int);
 
     CreateNode(&first, arr, size);
@@ -124,7 +131,7 @@ int main()
 
     display(reverseNode); */
 
-    deleteNode(&first, 4);
+    deleteNode(&first, 1);
     printf("\n");
     display(first);
 

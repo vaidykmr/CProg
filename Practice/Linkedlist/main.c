@@ -7,6 +7,7 @@ int main()
     add_at_the_end("hi");    // O(N)
     add_at_the_end("hej");
     add_at_the_end("hola");
+    add_at_the_end("hello");
     add_at_the_end("eyy");
     // display();
     traverse();
@@ -18,7 +19,13 @@ int main()
     // delete_data_in_list("hello");
     insert_to_the_list(3, "Bro");
     insert_to_the_list(1, "Brother");
+    add_at_the_end("hello");
 
+    printf("\n");
+    traverse();
+
+
+    delete_data_in_list("hello");
     printf("\n");
     traverse();
 

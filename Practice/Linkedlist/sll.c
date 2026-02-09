@@ -137,32 +137,30 @@ int data_exists_in_list(char *data)
 void delete_data_in_list(char *data)
 {
     Node *cursor = __head;
-    int firstNodedeleted = 0;
 
     if (strcmp(cursor->data, data) == 0)
     {
         Node *tmp_Node = cursor;
         cursor = cursor->next_node;
         __head = cursor;
-        firstNodedeleted = 1;
         free (tmp_Node);
+        cursor = __head;
     }
 
-    if (!firstNodedeleted)
+    while (cursor && cursor->next_node)
     {
-        while (cursor)
+        if(strcmp(cursor->next_node->data, data) == 0)
         {
-            if(strcmp(cursor->next_node->data, data) == 0)
-            {
-                Node *temp_Node = cursor->next_node;
-                cursor->next_node = cursor->next_node->next_node;
-                // we need to free that deleted Node's memory so that it is available for others to use
-                free(temp_Node);
-                break;
-            }
-            cursor = cursor->next_node;
-
+            Node *temp_Node = cursor->next_node;
+            cursor->next_node = cursor->next_node->next_node;
+            // we need to free that deleted Node's memory so that it is available for others to use
+            free(temp_Node);
         }
+        else
+        {
+            cursor = cursor->next_node;
+        }
+
     }
 
 }
