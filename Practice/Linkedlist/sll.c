@@ -5,13 +5,10 @@
 #include "sll.h"
 // Performing linked list on strings
 
-typedef struct Node{
-    char data[40];
-    struct Node *next_node;
-} Node;
-
 static Node *__head = NULL;
 
+// For queue since FIFO, better to remember the tail for adding the node at the end
+static Node *__tail = NULL;
 static Node *__reverseNode = NULL;
 
 // Implementing memory copy operation instead of builtin api memcpy()
@@ -41,6 +38,9 @@ int init(char *data)
 
     memcpy(__head->data, data, strlen(data));
     __head->next_node = NULL;
+
+    // For implementing the queue
+    __tail = __head;
 
     // Only for printing purpose to verify the output
     /* printf("data : %s \n", __head->data);
@@ -227,4 +227,40 @@ void reverse(void)
         currentNode = last;
     }
     __reverseNode = prev;
+}
+
+
+// queue operation
+void fetch(void)
+{
+    Node *fetched_queue = NULL;
+    Node *cursor = __head;
+
+    char *returnData = NULL;
+    if (cursor)
+    {
+        fetched_queue = cursor;
+        __head = cursor->next_node;
+        fetched_queue->next_node = NULL;
+        returnData = fetched_queue->data;
+        printf("\n Fetched data inside the function is %s", returnData);
+        free(fetched_queue);
+    }
+    else
+        printf("Queue is empty\n");
+
+}
+
+//add implementation for Queue
+int add_queue(char *data)
+{
+    Node *newQueue = malloc(sizeof(Node));
+    if (!newQueue)
+        return -1;
+    
+    memcpy(newQueue->data, data, strlen(data)+1);
+    newQueue->next_node = NULL;
+    __tail->next_node = newQueue;
+    __tail = newQueue;
+    return 0;
 }

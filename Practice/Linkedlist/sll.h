@@ -7,6 +7,12 @@
 #include <string.h>
 #include <stddef.h>   // for ptrdiff_t
 // Implementing memory copy operation instead of builtin api memcpy()
+
+typedef struct Node{
+    char data[40];
+    struct Node *next_node;
+} Node;
+
 void *my_memcpy(void *dst, void *src, size_t src_size);
 int init(char *data);
 int add (char *data);
@@ -18,5 +24,7 @@ void display(void);
 void traverse(void);
 void reverse_traverse(void);
 void reverse(void);
+
+void fetch(void);
 
 #endif

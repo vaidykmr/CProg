@@ -2,6 +2,9 @@
 #include "sll.h"
 int main()
 {
+
+    fetch();
+    fetch();
     init("hello");
     // add("hi");  // FIFO method  O(1)
     add_at_the_end("hi");    // O(N)
@@ -29,6 +32,11 @@ int main()
     printf("\n");
     traverse();
 
+    fetch();
+    fetch();
+
+    printf("\n");
+    traverse();
     // reverse();
     // printf("\n");
     // reverse_traverse();
