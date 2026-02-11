@@ -140,6 +140,16 @@ struct Node *deleteDuplicates (struct Node *head)
     return originalNode;
 }
 
+struct Node *convertToCircularLinkedList(struct Node *head)
+{
+    struct Node *cursor = head;
+    while (cursor->next)
+    {
+        cursor = cursor->next;
+    }
+    cursor->next = head;
+}
+
 int main()
 {
     struct Node *first = NULL;
@@ -161,6 +171,12 @@ int main()
     struct Node *remDupNode = deleteDuplicates(first);
     printf("\n");
     display(remDupNode);
+
+    // To impement circular LL for understanding purpose
+    /*struct Node* circularLL = convertToCircularLinkedList(first);
+    printf("\n");
+    display(circularLL);*/
+    
 
     /* int decimalInteger = getDecimalValue(first);
 
