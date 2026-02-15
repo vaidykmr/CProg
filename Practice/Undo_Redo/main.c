@@ -12,12 +12,14 @@ typedef struct Stack{
 
 Stack *__headUndoStack = NULL;
 Stack *__headRedoStack = NULL;
+char doc[200] = "";
 
 void init(char *data)
 {
     __headUndoStack = malloc(sizeof(Stack));
     memcpy(__headUndoStack->data, data, strlen(data)+1);
     __headUndoStack->next = NULL;
+    strcat(doc, data);
     return;
 }
 
@@ -29,12 +31,17 @@ int type(char *data)
         return 0;
     }
 
+    if (strlen(doc) + strlen(data) >= sizeof(doc))
+        return -1;
+    
+    strcat(doc, data);
+
     Stack *newNode = malloc(sizeof(Stack));
     memcpy(newNode->data, data, strlen(data)+1);
     newNode->next = __headUndoStack;
     __headUndoStack = newNode;
 
-    if (__headRedoStack && (strcmp(__headRedoStack->data, newNode->data) != 1))
+    if (__headRedoStack)
     {
         Stack* cursor = __headRedoStack;
         while (cursor)
@@ -63,20 +70,10 @@ int undo()
     __headUndoStack = cursor->next;
     popNode->next = NULL;
 
-    if (!__headRedoStack)
-    {
-        popNode->next = __headRedoStack;
-        __headRedoStack = popNode;
+    doc[strlen(doc) - strlen(popNode->data)] = '\0';
 
-    }
-    else
-    {
-        Stack *newNode = malloc(sizeof(Stack));
-        memcpy(newNode->data, popNode->data, strlen(popNode->data)+1);
-        newNode->next = __headRedoStack;
-        __headRedoStack = newNode;
-        free(popNode);
-    }
+    popNode->next = __headRedoStack;
+    __headRedoStack = popNode;
     return 0;
     
 }
@@ -84,7 +81,6 @@ int undo()
 int redo()
 {
     Stack *cursor = __headRedoStack;
-    int isLastNode = 0;
 
     if (!cursor)
     {
@@ -95,22 +91,27 @@ int redo()
     Stack *popNode = cursor;
     __headRedoStack = cursor->next;
     popNode->next = NULL;
-    if (!__headUndoStack)
-    {
-        popNode->next = __headUndoStack;
-        __headUndoStack = popNode;
-    }
-    else
-    {
-        Stack *newNode = malloc(sizeof(Stack));
-        memcpy(newNode->data, popNode->data, strlen(popNode->data)+1);
-        newNode->next = __headUndoStack;
-        __headUndoStack = newNode;
-        free(popNode);
-    }
+
+    strcat(doc, popNode->data);
     
+    popNode->next = __headUndoStack;
+    __headUndoStack = popNode;
+
     return 0;
     
+}
+
+void traverseDoc()
+{
+    if (doc[0] == '\0')
+    {
+        printf("Doc empty \n");
+        return;
+    }
+    for(int i = 0; doc[i] != '\0'; i++)
+        printf("%c", doc[i]);
+    
+    printf("\n");
 }
 
 void traverseUndo()
@@ -147,21 +148,56 @@ void traverseRedo()
     printf("\n");
 }
 
+void freeNodesAndEmptyDoc()
+{
+    Stack *cursor = __headRedoStack;
+    while (cursor)
+    {
+        Stack *next = cursor->next;
+        free(cursor);
+        cursor = next;
+    }
+    __headRedoStack = NULL;
+
+    cursor = __headUndoStack;
+    while (cursor)
+    {
+        Stack *next = cursor->next;
+        free(cursor);
+        cursor = next;
+    }
+    __headUndoStack = NULL;
+
+    doc[0] = '\0';
+}
+
 int main()
 {
-    type("Hello");
-    type("World");
+    type("Hello ");
+    type("World ");
     type("Hi");
+    traverseDoc();
     traverseUndo();
     traverseRedo();
     //traverseUndo();
     undo();
     undo();
+    undo();
 
-    type("Hola");
+    redo();
+
+    //type("Hola");
 
     //undo();
+    traverseDoc();
     traverseUndo();
     traverseRedo();
 
+    type("Hola");
+    traverseDoc();
+    traverseUndo();
+    traverseRedo();
+    freeNodesAndEmptyDoc();
+
+    traverseDoc();
 }
