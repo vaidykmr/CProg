@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <string.h>
+
+#define POOL_SIZE 800
+
 
 typedef struct FreeNode{
     struct FreeNode *next;
@@ -49,5 +53,40 @@ void push(void *ptr_address, memPool *pool)
     FreeNode *pushNode = (FreeNode*)ptr_address;
     pushNode->next = pool->head;
     pool->head = pushNode;
+    return;
+}
+
+int main()
+{
+    memPool pool;
+    uint8_t memory[128];
+    size_t nrOfBlocks = 10;
+    size_t blockSize = POOL_SIZE / nrOfBlocks;
+
+    uint8_t word[8] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', '\0'};
+    pool_init(&pool, memory, blockSize, nrOfBlocks);
+
+    void *newAddress = pop(&pool);
+
+    printf("Received address from the pool : %p \n", newAddress);
+
+    uint8_t *c = (uint8_t*)newAddress;
+
+    for (uint16_t i = 0; i < 8; i++)
+    {
+        *(c+i) = word[i]; 
+    }
+
+
+    for (uint16_t i = 0; i < 8; i++)
+    {
+        printf("%c", c[i]);
+    }
+
+    memset(c, 0, pool.blockSize);
+    push((void*)c, &pool);
+    c = NULL;
+
+    return 0;
 }
 
