@@ -2,14 +2,14 @@
 #include <pthread.h>
 
 int counter = 0;
-pthread_mutex_t lock;
+pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
 void *thread1(void *args)
 {
-    while (counter < 1000)
+    while (1)
     {
         pthread_mutex_lock(&lock);
-        if (counter >= 1000)
+        if (counter >= 10)
         {
             pthread_mutex_unlock(&lock);
             break;
@@ -24,10 +24,10 @@ void *thread1(void *args)
 
 void *thread2(void *args)
 {
-    while (counter < 1000)
+    while (1)
     {
         pthread_mutex_lock(&lock);
-        if (counter >= 1000)
+        if (counter >= 10)
         {
             pthread_mutex_unlock(&lock);
             break;
@@ -50,6 +50,7 @@ int main()
     pthread_join(t1, NULL);
     pthread_join(t2, NULL);
 
+    printf("Hello world \n");
     pthread_mutex_destroy(&lock);
 
     return 0;
