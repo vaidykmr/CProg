@@ -1,6 +1,16 @@
 #include <stdio.h>
 #include <pthread.h>
 
+/*
+Mutex is needed when we want only one thread to access the shared variable.
+This is done because the data stored in heap and global variables are shared
+among all the threads. So in order to avoid race condition, we use mutex.
+
+We need mutex when only when there are only two threads and only is allowed to access the shared variable.
+But if there is a case where there are multiple threads and we want to protect the shared variable such that
+only one thread acces it, then we need semaphores.
+*/
+
 int counter = 0;
 pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
